@@ -1,0 +1,7 @@
+# Example text training data
+# doubles as the data we want to compress
+
+This is a single line of compressible text
+The tools don't include newlines as compressible text
+
+Empty lines are ignores

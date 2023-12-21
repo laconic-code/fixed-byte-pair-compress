@@ -1,0 +1,24 @@
+#pragma once
+#include <stdint.h>
+
+#define DICTIONARY_EOS_IDX              0
+#define DICTIONARY_LITERAL_IDX          1
+#define DICTIONARY_1C_LITERAL_IDX       2
+#define DICTIONARY_1C_START_IDX         3
+#define DICTIONARY_2C_START_IDX         {{ tupleStartIdx }}
+#define DICTIONARY_3C_START_IDX         {{ tripleStartIdx }}
+#define DICTIONARY_1C_START_OFFSET      3
+#define DICTIONARY_2C_START_OFFSET      {{ tupleStartOffset }}
+#define DICTIONARY_3C_START_OFFSET      {{ tripleStartOffset }}
+#define DICTIONARY_ENTRIES              {{ totalEntries }}
+#define DICTIONARY_BYTES                {{ totalBytes }}
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+uint8_t const* Dictionary_get();
+
+#ifdef __cplusplus
+} // extern "C" {
+#endif
