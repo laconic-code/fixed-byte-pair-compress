@@ -1,0 +1,30 @@
+#include "Dictionary.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef PROGMEM
+#define PROGMEM
+#endif
+
+static const uint8_t gDictionary[] PROGMEM = {
+    0x00,                                     // 0x00 (000) - placeholder, unused
+    0x00,                                     // 0x01 (001) - placeholder, unused
+    0x00,                                     // 0x02 (002) - placeholder, unused
+{% for entry in entries %}
+    {{ "{:<42}// 0x{:02x} ({:03}) - \"{}\"".format(
+        asBytes(entry.seq) + (" " if loop.last else ","),
+        loop.index0 + RESERVED_CODES,
+        loop.index0 + RESERVED_CODES,
+        entry.seq) }}
+{% endfor %}
+};
+
+uint8_t const* Dictionary_get() {
+    return gDictionary;
+}
+
+#ifdef __cplusplus
+} // extern "C" {
+#endif
