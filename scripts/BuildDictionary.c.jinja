@@ -1,0 +1,43 @@
+#include "Fbp_{{ name }}.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+static const uint8_t FixedBytePairState_{{ name }}_Dictionary[] {{ postfix }} = {
+{% for entry in entries %}
+    {{ "{:<42}// 0x{:02x} ({:03}) - \"{}\"".format(
+        asBytes(entry.seq) + (" " if loop.last else ","),
+        loop.index0 + RESERVED_CODES,
+        loop.index0 + RESERVED_CODES,
+        entry.seq) }}
+{% endfor %}
+};
+
+const FixedBytePairState_t FixedBytePairState_{{ name }} {{ postfix }}= {
+    {{ tupleStartIdx }}, // uint8_t index2CharStart;
+    {{ tripleStartIdx }}, // uint8_t index3CharStart;
+    {{ tupleStartOffset }}, // uint8_t offset2CharStart;
+    {{ tripleStartOffset }}, // uint8_t offset3CharStart;
+    {{ totalEntries }}, // uint8_t entries;
+    {{ totalBytes }}, // uint8_t bytes;
+    FixedBytePairState_{{ name }}_Dictionary // uint8_t* dictionary;
+};
+
+#if defined(FBP_REGISTER)
+
+static void FixedBytePairState_{{ name }}_init() __attribute__((constructor));
+void FixedBytePairState_{{ name }}_init() {
+    FixedBytePair_register("{{ name }}", &FixedBytePairState_{{ name }});
+}
+
+static void FixedBytePairState_{{ name }}_deinit() __attribute__((destructor));
+void FixedBytePairState_{{ name }}_deinit() {
+    FixedBytePair_unregister("{{ name }}");
+}
+
+#endif // #if defined(FBP_REGISTER)
+
+#ifdef __cplusplus
+} // extern "C" {
+#endif

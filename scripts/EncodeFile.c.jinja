@@ -1,0 +1,17 @@
+
+{% for e in strings %}
+// '{{ e }}'
+// Compressed {{ ratio }}%, {{ len(in) }} -> {{ len(out) }} chars
+const char {{ name }}_{{ loop.index0 }}[] {{- prefix }} = { {{ getBytes(e) }} };
+{% endfor %}
+
+// total compression: {{ ratio }}%, {{ bytesBefore }} -> {{ bytesAfter }} bytes
+// w/ dictionary: {{ rationDict }}%, {{ bytesBeforeDict }} -> {{ bytesAfter }} bytes
+
+const char* const {{ name }}s[] {{- prefix }} = {
+{% for e in strings %}
+    {{ name }}_{{ loop.index0 }}{{ "," if loop.index0 != len(strings) - 1 else "" }}
+{% endfor %}
+};
+
+const uint8_t {{ name }}s_COUNT = sizeof({{ name }}s) / sizeof({{ name }}s[0]);

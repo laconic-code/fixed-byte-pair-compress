@@ -1,0 +1,9 @@
+#pragma once
+
+{% for e in strings %}
+const char* {{ name }}_{{ loop.index0 }};
+{% endfor %}
+
+const char** const {{ name }}s;
+
+const uint8_t {{ name }}s_COUNT;

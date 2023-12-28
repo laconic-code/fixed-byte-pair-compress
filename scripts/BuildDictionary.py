@@ -28,6 +28,9 @@ parser.add_argument(
     "source",
     help="file to build a dictionary for")
 parser.add_argument(
+    "name",
+    help="Name of the dictionary to build")
+parser.add_argument(
     "-t",
     "--no-trim",
     dest="trim",
@@ -38,7 +41,7 @@ parser.add_argument(
     "--comment-char",
     dest="comment",
     default='#',
-    help="ignore lines with the given character")
+    help="ignore lines with the given character. default: '#'")
 parser.add_argument(
     "-d",
     "--directory",
@@ -180,6 +183,7 @@ def asBytes(sequence):
     return ", ".join(["0x%02x" % ord(ch) for ch in sequence])
 
 data = dict(
+    name=args.name,
     entries=entries,
     tupleStartIdx=tupleStartIdx,
     tripleStartIdx=tripleStartIdx,
@@ -190,20 +194,19 @@ data = dict(
     RESERVED_CODES=RESERVED_CODES)
 
 
-rootdir = pathlib.Path(__file__).parent.parent
-loader = jinja2.FileSystemLoader(rootdir / "res" / "templates")
+loader = jinja2.FileSystemLoader(pathlib.Path(__file__).parent)
 env = jinja2.Environment(loader=loader, trim_blocks=True)
 env.globals["asBytes"] = asBytes
 env.globals["hex"] = hex
 
-outfile = os.path.join(args.directory, "Dictionary.c")
-template = env.get_template("Dictionary.c.jinja")
+outfile = os.path.join(args.directory, "Fbp_" + args.name + ".c")
+template = env.get_template("BuildDictionary.c.jinja")
 result = template.render(**data)
 with open(outfile, "w+") as f:
     f.write(result)
 
-outfile = os.path.join(args.directory, "Dictionary.h")
-template = env.get_template("Dictionary.h.jinja")
+outfile = os.path.join(args.directory, "Fbp_" + args.name + ".h")
+template = env.get_template("BuildDictionary.h.jinja")
 result = template.render(**data)
 with open(outfile, "w+") as f:
     f.write(result)

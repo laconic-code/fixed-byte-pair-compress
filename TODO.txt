@@ -1,0 +1,49 @@
+## Targeted
+
+- unit tests
+- Arduino targeted export to a single file
+    (Dictionary + decompress + compress, select what to include)
+- option: disable single character codes (not entered into dictionary)
+- option: encode newlines
+- word support
+- user supplied tuples
+- user supplied triples
+- user supplied words
+- python bindings
+- Performance investigation/code cleanup
+
+
+# Word Encoding
+
+dictionary building:
+  track words at a time and include them in the sorting + selection.
+  is there a way to do this on a non-word boundary?
+
+encoding:
+  start from the end of the word section OFFSET and perform strncmps
+  ```c
+    idx = DICTIONARY_WORD_IDX
+    offset = DICTIONARY_WORD_OFFSET;
+    while (idx < DICTIONARY_LENGTH) {
+        entry = Dictionary + offset;
+        if (strncmp(entry, strlen(entry), source) == 0) {
+            // set code and return
+        } else {
+            idx += 1;
+            offset += strlen(entry) + 1;
+        }
+    }
+  ```
+
+decoding:
+  ```c
+    if (code > DICTIONARY_WORD_IDX) {
+        idx = code - DICTIONARY_WORD_IDX;
+        offset = DICTIONARY_WORD_OFFSET;
+        while (idx != idx) {
+            idx += 1;
+            offset += strlen(entry) + 1;
+        }
+        memcpy(destination, offset, len(offset));
+    }
+  ```

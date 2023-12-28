@@ -1,45 +1,43 @@
-###############
-# CompressCli #
-###############
+##########
+# encode #
+##########
 
 add_executable(
-    CompressCli
-    CompressCli.cpp)
+    fbp_encode
+    fbp_encode.c)
 
 target_include_directories(
-    CompressCli
+    fbp_encode
     PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/
     ${CMAKE_CURRENT_LIST_DIR}/../src/)
 
 target_link_libraries(
-    CompressCli
+    fbp_encode
     PUBLIC
-    Dictionary)
+    fbp)
 
 install(
-    TARGETS CompressCli
+    TARGETS fbp_encode
     DESTINATION bin)
 
-###########
-# Example #
-###########
+##########
+# decode #
+##########
 
 add_executable(
-    Example
-    Example.cpp)
+    fbp_decode
+    fbp_decode.c)
 
 target_include_directories(
-    Example
+    fbp_decode
     PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/
     ${CMAKE_CURRENT_LIST_DIR}/../src/)
 
 target_link_libraries(
-    Example
+    fbp_decode
     PUBLIC
     Dictionary)
 
 install(
-    TARGETS Example
+    TARGETS fbp_decode
     DESTINATION bin)
